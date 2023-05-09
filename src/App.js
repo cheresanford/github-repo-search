@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './index.css';
 import logo from './logo.png';
 import SearchResults from './SearchResults';
@@ -7,12 +7,30 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [animateResults, setAnimateResults] = useState(false);
+  const [showTopDiv, setShowTopDiv] = useState(true);
   const topRef = useRef(null);
+  
+  //Página de carregamento inicial
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowTopDiv(false);
+    }, 3000); // Esconde depois de 3 segundos
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    setCurrentPage(1);
-    fetchData(1);
+    
+    if (searchTerm.trim() === '') {
+      alert('Buscas vazias não são válidas! Por favor, tente novamente com alguma palavra.');
+    } else {
+      setCurrentPage(1);
+      fetchData(1);
+    }
+    
   };
 
   const fetchData = async (page) => {
@@ -24,7 +42,10 @@ function App() {
       alert('Nenhum repositório encontrado para a busca realizada.');
     } else {
       setSearchResults(data.items);
+      setAnimateResults(true);
+      setTimeout(() => setAnimateResults(false), 1000); // Reset animation state after 1 second (duration of the animation)
       topRef.current.scrollIntoView({ behavior: 'smooth' });
+
     }
   };
 
@@ -41,6 +62,15 @@ function App() {
   return (
     
     <div className="app" ref={topRef}>
+      
+      {showTopDiv && (
+  <>
+    <div className="top-div">Bem-vindo ao GitSearch! Busque repositórios na barra de pesquisa abaixo</div>
+    <div className="overlay"></div>
+    
+  </>
+)}
+    <div className={`container ${showTopDiv ? 'blurred' : ''}`}>
       <img src={logo} alt="Logo" className='logo'></img>  
       <h1> GitSearch - Busca de Repositórios</h1>
       <form onSubmit={handleSearch}>
@@ -62,7 +92,7 @@ function App() {
         )}
       </div>
       
-      <SearchResults results={searchResults} />
+      <SearchResults results={searchResults} animate={animateResults} />
       <div className="pagination">
         {currentPage > 1 && (
           <button onClick={() => handlePageChange(-1)}>Anterior</button>
@@ -73,6 +103,7 @@ function App() {
         )}
       </div>
       <button onClick={scrollToTop} className="back-to-top">Voltar para o Topo</button>
+    </div>
     </div>
   );
 }

@@ -1,10 +1,11 @@
 import React from 'react';
 
-const SearchResults = ({ results }) => {
+const SearchResults = ({ results, animate }) => {
   return (
     <div className="search-results">
       {results.map((result) => (
-        <div key={result.id} className="repository">
+        <div key={result.id} 
+        className={`repository ${animate ? 'fade-in' : ''}`}>
           <h3>
             <a href={result.html_url} target="_blank" rel="noopener noreferrer">
               {result.name}
