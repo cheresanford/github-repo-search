@@ -142,7 +142,7 @@ button:hover {
 .back-to-top {
   position: fixed;
   bottom: 20px;
-  right: 80px;
+  right: 20px;
   padding: 10px 15px;
   font-size: 14px;
   background-color: #ff4800;

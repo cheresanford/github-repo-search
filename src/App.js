@@ -95,7 +95,7 @@ function App() {
       )}
       <img src={logo} alt="Logo" className='logo'></img>  
       <h1>Busca de Repositórios</h1>
-      <h2>Plataforma para pesquisar repositórios do GitHub. Desenvolvido por Carlos Henrique @ 2023.</h2>
+      <h2>Plataforma para pesquisar repositórios do GitHub. Desenvolvido por <a href='https://www.linkedin.com/in/carlos-henrique-aa0273268/'>Carlos Henrique @ 2023.</a></h2>
       
       <div className="filters">
           <div className="language-filter">
@@ -154,15 +154,14 @@ function App() {
       )}
     
     </div>
-    
-    <a
+    <div><a
       href="https://wa.me/5521967022385"
       target="_blank"
       rel="noopener noreferrer"
       className="whatsapp-button"
     >
       <FaWhatsapp size={32} className='whatsapp-icon' />
-    </a>
+    </a> </div>
     </div>
   );
 }
