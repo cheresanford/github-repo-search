@@ -1,52 +1,57 @@
-import React, { useState, useRef, useEffect } from 'react';
-import './index.css';
-import { FaWhatsapp } from 'react-icons/fa'; 
-import './App.css';
-import logo from './logo.png';
-import SearchResults from './SearchResults';
+import React, { useState, useRef, useEffect } from 'react'; // Importando as funções do React
+import './index.css'; 
+import { FaWhatsapp } from 'react-icons/fa'; // Importando o ícone do Whatsapp da biblioteca react-icons
+import './App.css'; // Importando o arquivo de estilos
+import logo from './logo.png'; // Importando a imagem do logo
+import SearchResults from './SearchResults'; // Importando o componente de resultados da busca
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [animateResults, setAnimateResults] = useState(false);
-  const [showTopDiv, setShowTopDiv] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [searchDone, setSearchDone] = useState(false);
-  const [languageFilter, setLanguageFilter] = useState('');
+  // Estado da aplicação
+  const [searchTerm, setSearchTerm] = useState(''); // Termo da busca
+  const [searchResults, setSearchResults] = useState([]); // Resultados da busca
+  const [currentPage, setCurrentPage] = useState(1); // Página atual da busca
+  const [animateResults, setAnimateResults] = useState(false); // Controla a animação dos resultados
+  const [showTopDiv, setShowTopDiv] = useState(true); // Controla a exibição da div superior
+  const [loading, setLoading] = useState(false); // Controla a exibição do spinner de carregamento
+  const [searchDone, setSearchDone] = useState(false); // Controla se a busca foi realizada
+  const [languageFilter, setLanguageFilter] = useState(''); // Filtro de linguagem
 
+  const topRef = useRef(null); // Referência para a div superior da página
 
-  const topRef = useRef(null);
   
-  //Página de carregamento inicial
   
+  
+  // Função executada quando o componente é montado
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowTopDiv(false);
-    }, 3000); // Esconde depois de 3 segundos
+      setShowTopDiv(false); // Esconde a div superior depois de 3 segundos
+    }, 3000);
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(timer); // Limpa o timer ao desmontar o componente
   }, []);
 
+  // Função que lida com a mudança do filtro de linguagem
   const handleLanguageFilterChange = (event) => {
     setLanguageFilter(event.target.value);
   };
 
+  // Função que lida com a submissão do formulário de busca
   const handleSearch = async (e) => {
     e.preventDefault();
     
-    if (searchTerm.trim() === '') {
+    if (searchTerm.trim() === '') { // Verifica se o termo da busca está vazio
       alert('Buscas vazias não são válidas! Por favor, tente novamente com alguma palavra.');
     } else {
-      setCurrentPage(1);
-      fetchData(1);
+      setCurrentPage(1); // Reseta a página atual
+      fetchData(1); // Busca os dados da primeira página
     }
     
   };
 
+  // Função que busca os dados da API do Github
   const fetchData = async (page) => {
-    setLoading(true); // Adicionado
-    const queryString = languageFilter
+    setLoading(true); 
+    const queryString = languageFilter // Verifica se o filtro de linguagem foi selecionado
     ? `${searchTerm} language:${languageFilter}`
     : searchTerm;
 
@@ -54,28 +59,31 @@ function App() {
     `https://api.github.com/search/repositories?q=${queryString}&sort=stars&order=desc&per_page=10&page=${page}`
   );
     const data = await response.json();
-    if (data.items.length === 0) {
+    if (data.items.length === 0) { // Verifica se a busca não retornou resultados
       alert('Nenhum repositório encontrado para a busca realizada.');
     } else {
       setSearchDone(true);
-      setSearchResults(data.items);
+      setSearchResults(data.items); // Atualiza os resultados da busca
       setAnimateResults(true);
-      setTimeout(() => setAnimateResults(false), 1000);
-      topRef.current.scrollIntoView({ behavior: 'smooth' });
-
+      setTimeout(() => setAnimateResults(false), 1000); // Reseta o estado da animação depois de 1 segundo
+      topRef.current.scrollIntoView({ behavior: 'smooth' }); // Rola a página para o topo
     }
-    setLoading(false);
+    setLoading(false); // Esconde o spinner de carregamento
   };
 
+  // Função que lida com a mudança de página
   const handlePageChange = (direction) => {
-    const newPage = currentPage + direction;
-    setCurrentPage(newPage);
-    fetchData(newPage);
+    const newPage = currentPage + direction; // Calcula a nova página
+    setCurrentPage(newPage); // Atualiza a página atual
+    fetchData(newPage); // Busca os dados da nova página
   };
 
+  // Função que rola a página para o topo
   const scrollToTop = () => {
     topRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Componente
 
   return (
     

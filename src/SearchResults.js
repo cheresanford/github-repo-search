@@ -1,9 +1,12 @@
 import React from 'react';
 
 const SearchResults = ({ results, animate }) => {
+
+
   return (
     <div className="search-results">
       {results.map((result) => (
+        
         <div key={result.id} 
         className={`repository ${animate ? 'fade-in' : ''}`}>
           <h3>
@@ -17,6 +20,7 @@ const SearchResults = ({ results, animate }) => {
           <p>💻 <b>Linguagem:</b> {result.language}</p>
           <p>⭐ <b>Stars:</b> {result.stargazers_count}</p>
           <p>🍴  <b>Forks:</b> {result.forks_count}</p>
+          
           </div>
           <p>Última modificação: {new Date(result.updated_at).toLocaleDateString()}</p>
         </div>
