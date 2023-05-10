@@ -13,6 +13,7 @@ function App() {
   const [showTopDiv, setShowTopDiv] = useState(true);
   const [loading, setLoading] = useState(false);
   const [searchDone, setSearchDone] = useState(false);
+  const [languageFilter, setLanguageFilter] = useState('');
 
 
   const topRef = useRef(null);
@@ -26,6 +27,10 @@ function App() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleLanguageFilterChange = (event) => {
+    setLanguageFilter(event.target.value);
+  };
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -41,9 +46,13 @@ function App() {
 
   const fetchData = async (page) => {
     setLoading(true); // Adicionado
-    const response = await fetch(
-      `https://api.github.com/search/repositories?q=${searchTerm}&sort=stars&order=desc&per_page=10&page=${page}`
-    );
+    const queryString = languageFilter
+    ? `${searchTerm} language:${languageFilter}`
+    : searchTerm;
+
+  const response = await fetch(
+    `https://api.github.com/search/repositories?q=${queryString}&sort=stars&order=desc&per_page=10&page=${page}`
+  );
     const data = await response.json();
     if (data.items.length === 0) {
       alert('Nenhum repositório encontrado para a busca realizada.');
@@ -87,6 +96,25 @@ function App() {
       <img src={logo} alt="Logo" className='logo'></img>  
       <h1>Busca de Repositórios</h1>
       <h2>Plataforma para pesquisar repositórios do GitHub. Desenvolvido por Carlos Henrique @ 2023.</h2>
+      
+      <div className="filters">
+          <div className="language-filter">
+            <label htmlFor="language-filter">Filtrar por linguagem: </label>
+            <select
+              id="language-filter"
+              value={languageFilter}
+              onChange={handleLanguageFilterChange}
+            >
+              <option value="">Todas</option>
+              <option value="javascript">JavaScript</option>
+              <option value="python">Python</option>
+              <option value="java">Java</option>
+              <option value="csharp">C#</option>
+              
+            </select>
+          </div>
+        </div>
+
       <form onSubmit={handleSearch}>
         <input
           type="text"

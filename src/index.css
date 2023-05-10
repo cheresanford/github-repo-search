@@ -23,8 +23,6 @@ body {
   border-radius: 5px;
 }
 
-<<<<<<< Updated upstream
-=======
 .page-content {
   display: flex;
   flex-direction: column;
@@ -60,7 +58,6 @@ body {
   background-color: #fff;
   cursor: pointer;
 }
->>>>>>> Stashed changes
 
 .language-filter option {
   padding: 0.5rem;
