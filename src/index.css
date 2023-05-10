@@ -23,7 +23,48 @@ body {
   border-radius: 5px;
 }
 
+<<<<<<< Updated upstream
+=======
+.page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
 
+
+.filters {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.language-filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.language-filter select {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #fff;
+  cursor: pointer;
+}
+>>>>>>> Stashed changes
+
+.language-filter option {
+  padding: 0.5rem;
+}
 h1 {
   text-align: center;
   margin-bottom: 5px;
@@ -200,4 +241,78 @@ button:hover {
 .blurred {
   filter: blur(2px);
   animation: unfade 6s;
+}
+
+.circular-menu {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.circular-menu .menu-option {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  margin: -40px 0 0 -40px;
+  text-align: center;
+  line-height: 80px;
+  border-radius: 50%;
+  background-color: #1e88e5;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.circular-menu:hover .menu-option {
+  opacity: 1;
+}
+
+.circular-menu .language-filter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  background-color: #1e88e5;
+  border-radius: 50%;
+  padding: 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.circular-menu .language-filter:hover {
+  background-color: #1565c0;
+}
+
+/* Posicionamento das opções do menu */
+.circular-menu .menu-option:nth-child(1) {
+  transform: translate(-50%, -50%) rotate(0deg) translateY(-100px) rotate(0deg);
+}
+
+.circular-menu .menu-option:nth-child(2) {
+  transform: translate(-50%, -50%) rotate(120deg) translateY(-100px) rotate(-120deg);
+}
+
+.circular-menu .menu-option:nth-child(3) {
+  transform: translate(-50%, -50%) rotate(240deg) translateY(-100px) rotate(-240deg);
+}
+
+/* Estilos para o menu aberto */
+.circular-menu.open .menu-option {
+  opacity: 1;
+}
+
+.circular-menu.open .menu-option:nth-child(1) {
+  transform: translate(-50%, -50%) rotate(0deg) translateY(-100px) rotate(0deg);
+}
+
+.circular-menu.open .menu-option:nth-child(2) {
+  transform: translate(-50%, -50%) rotate(120deg) translateY(-100px) rotate(-120deg);
+}
+
+.circular-menu.open .menu-option:nth-child(3) {
+  transform: translate(-50%, -50%) rotate(240deg) translateY(-100px) rotate(-240deg);
 }

@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './index.css';
+import { FaWhatsapp } from 'react-icons/fa'; 
+import './App.css';
 import logo from './logo.png';
 import SearchResults from './SearchResults';
 
@@ -11,6 +13,7 @@ function App() {
   const [showTopDiv, setShowTopDiv] = useState(true);
   const [loading, setLoading] = useState(false);
   const [searchDone, setSearchDone] = useState(false);
+
 
   const topRef = useRef(null);
   
@@ -48,11 +51,11 @@ function App() {
       setSearchDone(true);
       setSearchResults(data.items);
       setAnimateResults(true);
-      setTimeout(() => setAnimateResults(false), 1000); // Reset animation state after 1 second (duration of the animation)
+      setTimeout(() => setAnimateResults(false), 1000);
       topRef.current.scrollIntoView({ behavior: 'smooth' });
 
     }
-    setLoading(false); // Adicionado
+    setLoading(false);
   };
 
   const handlePageChange = (direction) => {
@@ -123,6 +126,15 @@ function App() {
       )}
     
     </div>
+    
+    <a
+      href="https://wa.me/5521967022385"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="whatsapp-button"
+    >
+      <FaWhatsapp size={32} className='whatsapp-icon' />
+    </a>
     </div>
   );
 }
