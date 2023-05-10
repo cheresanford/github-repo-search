@@ -9,6 +9,9 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [animateResults, setAnimateResults] = useState(false);
   const [showTopDiv, setShowTopDiv] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [searchDone, setSearchDone] = useState(false);
+
   const topRef = useRef(null);
   
   //Página de carregamento inicial
@@ -34,6 +37,7 @@ function App() {
   };
 
   const fetchData = async (page) => {
+    setLoading(true); // Adicionado
     const response = await fetch(
       `https://api.github.com/search/repositories?q=${searchTerm}&sort=stars&order=desc&per_page=10&page=${page}`
     );
@@ -41,12 +45,14 @@ function App() {
     if (data.items.length === 0) {
       alert('Nenhum repositório encontrado para a busca realizada.');
     } else {
+      setSearchDone(true);
       setSearchResults(data.items);
       setAnimateResults(true);
       setTimeout(() => setAnimateResults(false), 1000); // Reset animation state after 1 second (duration of the animation)
       topRef.current.scrollIntoView({ behavior: 'smooth' });
 
     }
+    setLoading(false); // Adicionado
   };
 
   const handlePageChange = (direction) => {
@@ -61,9 +67,7 @@ function App() {
 
   return (
     
-    <div className="app" ref={topRef}>
-      Teste
-      
+    <div className="app" ref={topRef}>      
       {showTopDiv && (
   <>
     <div className="top-div">Bem-vindo ao GitSearch! Busque repositórios na barra de pesquisa abaixo</div>
@@ -72,8 +76,14 @@ function App() {
   </>
 )}
     <div className={`container ${showTopDiv ? 'blurred' : ''}`}>
+    {loading && (
+        <div className="spinner-container">
+          <div className="spinner"></div>
+        </div>
+      )}
       <img src={logo} alt="Logo" className='logo'></img>  
-      <h1> GitSearch - Busca de Repositórios</h1>
+      <h1>Busca de Repositórios</h1>
+      <h2>Plataforma para pesquisar repositórios do GitHub. Desenvolvido por Carlos Henrique @ 2023.</h2>
       <form onSubmit={handleSearch}>
         <input
           type="text"
@@ -83,17 +93,21 @@ function App() {
         />
         <button type="submit">Buscar</button>
       </form>
+
+      {(searchDone &&
       <div className="pagination">
         {currentPage > 1 && (
           <button onClick={() => handlePageChange(-1)}>Anterior</button>
         )}
-        <span>Página {currentPage}</span>
+        <div className='paginationText'>Página {currentPage}</div>
         {searchResults.length === 10 && (
           <button onClick={() => handlePageChange(1)}>Próxima</button>
         )}
-      </div>
+      </div>)}
+
       
       <SearchResults results={searchResults} animate={animateResults} />
+      {(searchDone &&
       <div className="pagination">
         {currentPage > 1 && (
           <button onClick={() => handlePageChange(-1)}>Anterior</button>
@@ -102,8 +116,12 @@ function App() {
         {searchResults.length === 10 && (
           <button onClick={() => handlePageChange(1)}>Próxima</button>
         )}
-      </div>
+      </div>)}
+
+      {(searchDone && 
       <button onClick={scrollToTop} className="back-to-top">Voltar para o Topo</button>
+      )}
+    
     </div>
     </div>
   );
